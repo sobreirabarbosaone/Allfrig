@@ -535,40 +535,61 @@
         f.addEventListener("mouseleave",()=>document.body.style.overflow="auto");
       });
     }
- // ==================== NOVO: DETECTAR CELULAR E SUBSTITUIR IFRAMES ====================
-    function verificarMobileEForcarLinks() {
-      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
-      if (!isMobile) return; // só executa no celular
+  // ==================== NOVO: DETECTAR CELULAR E ADICIONAR BOTÃO DE EDIÇÃO ====================
+  function verificarMobileEForcarLinks() {
+    const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+    if (!isMobile) return; // só executa no celular
 
-      document.querySelectorAll("iframe").forEach(iframe => {
-        const src = iframe.src;
-        if (src && src.includes("docs.google.com/spreadsheets")) {
-          iframe.parentElement.innerHTML = `
-            <div style="padding: 30px; background: #f9f9f9; border-radius: 12px;">
-              <p style="font-size:18px; margin-bottom: 10px;">📱 Para editar esta planilha, toque abaixo:</p>
-              <a href="${src}" target="_blank" style="color:#007bff; font-weight:bold; text-decoration:underline; font-size:18px;">
-                Abrir planilha no Google Sheets
-              </a>
-            </div>
-          `;
-        }
-      });
-    }
+    document.querySelectorAll("iframe").forEach(iframe => {
+      const src = iframe.src;
+      if (src && src.includes("docs.google.com/spreadsheets")) {
+        // cria um aviso e um botão logo abaixo do iframe
+        const aviso = document.createElement("p");
+        aviso.innerText = "🔒 Visualização apenas — toque abaixo para editar:";
+        aviso.style.color = "#555";
+        aviso.style.fontSize = "16px";
+        aviso.style.margin = "14px 0 6px 0";
+        aviso.style.fontFamily = "Merriweather, sans-serif";
 
-    // ==================== JANELA DE SELEÇÃO ====================
-    window.onload = async () => {
-      if(!userData.name) { window.location.href="index.html"; return; }
-      await carregarUsuarios();
-      document.getElementById("defaultOpen").click();
+        const btn = document.createElement("a");
+        btn.href = src;
+        btn.target = "_blank";
+        btn.innerText = "✏️ Abrir planilha no Google Sheets";
+        btn.style.display = "inline-block";
+        btn.style.marginBottom = "25px";
+        btn.style.padding = "10px 20px";
+        btn.style.fontSize = "18px";
+        btn.style.color = "white";
+        btn.style.backgroundColor = "#007bff";
+        btn.style.borderRadius = "8px";
+        btn.style.textDecoration = "none";
+        btn.style.fontFamily = "Merriweather, sans-serif";
+        btn.style.boxShadow = "0 2px 6px rgba(0,0,0,0.2)";
+        btn.style.transition = "0.2s";
 
-      abrirCampanhaSelecionada();
-      abrirPEXSelecionada();
-      abrirFornecedorSelecionada();
-      abrirGestaoSelecionada();
+        btn.onmouseenter = () => btn.style.backgroundColor = "#0056b3";
+        btn.onmouseleave = () => btn.style.backgroundColor = "#007bff";
 
-      bloquearScrollDuranteUsoIframeS();
-      verificarMobileEForcarLinks(); // 👈 executa o ajuste para celular
-    };
+        iframe.insertAdjacentElement("afterend", aviso);
+        aviso.insertAdjacentElement("afterend", btn);
+      }
+    });
+  }
+
+  // ==================== JANELA DE SELEÇÃO ====================
+  window.onload = async () => {
+    if(!userData.name) { window.location.href="index.html"; return; }
+    await carregarUsuarios();
+    document.getElementById("defaultOpen").click();
+
+    abrirCampanhaSelecionada();
+    abrirPEXSelecionada();
+    abrirFornecedorSelecionada();
+    abrirGestaoSelecionada();
+
+    bloquearScrollDuranteUsoIframeS();
+    verificarMobileEForcarLinks(); // 👈 adiciona botão no celular
+  };
   </script>
 </body>
 </html>
