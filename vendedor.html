@@ -147,14 +147,15 @@
 	}
 
 	.select-group {
-		display: flex;
+		display: fixed;
 		justify-content: center;
 		background-color: white;
 		gap: 15px;
 		margin-bottom: 15px;
-		flex-wrap: wrap;
-		
+		flex-wrap: wrap;	
 	}
+	
+	
 </style>
 </head>
 <body>
@@ -528,7 +529,7 @@
     }
 
  // ==================== BLOQUEAR O SCROLL ====================
-    function bloquearScrollDuranteIframeS(){
+    function bloquearScrollDuranteUsoIframeS(){
       document.querySelectorAll("iframe").forEach(f=>{
         f.addEventListener("mouseenter",()=>document.body.style.overflow="hidden");
         f.addEventListener("mouseleave",()=>document.body.style.overflow="auto");
@@ -549,5 +550,4 @@
     };
   </script>
 </body>
-
 </html>
