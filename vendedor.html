@@ -535,7 +535,27 @@
         f.addEventListener("mouseleave",()=>document.body.style.overflow="auto");
       });
     }
- // ==================== JANELA DE SELEÇÃO ====================
+ // ==================== NOVO: DETECTAR CELULAR E SUBSTITUIR IFRAMES ====================
+    function verificarMobileEForcarLinks() {
+      const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent);
+      if (!isMobile) return; // só executa no celular
+
+      document.querySelectorAll("iframe").forEach(iframe => {
+        const src = iframe.src;
+        if (src && src.includes("docs.google.com/spreadsheets")) {
+          iframe.parentElement.innerHTML = `
+            <div style="padding: 30px; background: #f9f9f9; border-radius: 12px;">
+              <p style="font-size:18px; margin-bottom: 10px;">📱 Para editar esta planilha, toque abaixo:</p>
+              <a href="${src}" target="_blank" style="color:#007bff; font-weight:bold; text-decoration:underline; font-size:18px;">
+                Abrir planilha no Google Sheets
+              </a>
+            </div>
+          `;
+        }
+      });
+    }
+
+    // ==================== JANELA DE SELEÇÃO ====================
     window.onload = async () => {
       if(!userData.name) { window.location.href="index.html"; return; }
       await carregarUsuarios();
@@ -546,7 +566,8 @@
       abrirFornecedorSelecionada();
       abrirGestaoSelecionada();
 
-      bloquearScrollDuranteUsoIframe();
+      bloquearScrollDuranteUsoIframeS();
+      verificarMobileEForcarLinks(); // 👈 executa o ajuste para celular
     };
   </script>
 </body>
