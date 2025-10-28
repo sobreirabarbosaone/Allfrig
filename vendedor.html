@@ -528,7 +528,7 @@
     }
 
  // ==================== BLOQUEAR O SCROLL ====================
-    function bloquearScrollDuranteUsoIframeS(){
+    function bloquearScrollDuranteIframeS(){
       document.querySelectorAll("iframe").forEach(f=>{
         f.addEventListener("mouseenter",()=>document.body.style.overflow="hidden");
         f.addEventListener("mouseleave",()=>document.body.style.overflow="auto");
@@ -549,4 +549,5 @@
     };
   </script>
 </body>
+
 </html>
