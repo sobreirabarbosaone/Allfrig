@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Allfrig - DASHBOARDS</title>
+  <style>
+	body {
+		font-family: Merriweather;, sans-serif;
+		background-color: white;
+		text-align: center;
+		margin: 0;
+		transition: margin-left 0.2s ease;
+	}
+
+	.Menu {
+		position: fixed;
+		top: 0;
+		width: 100%;
+		background-color: white;
+		display: flex;
+		justify-content: space-between; 
+		align-items: center;
+		padding: 10px 40px 10px 20px; /* top right bottom left */
+		z-index: 2000;
+		box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+	}
+
+	#menuList {
+		background-color: #333;
+		color: white;
+		border: none;
+		padding: 6px 15px;
+		font-size: 24px;
+		border-radius: 400px;
+		cursor: pointer;
+	}
+
+	.logout-button {
+		background-color: #cf0000;
+		color: white;
+		border: none;
+		border-radius: 400px;
+		position: flex;
+		cursor: pointer;
+		font-size: 24px;
+		padding: 6px 15px;
+		margin-right: 40px;
+	}
+
+	.logout-button:hover {
+		background-color: #c9302c;
+	}
+
+	.side-menu {
+		height: 100%;
+		width: 0;
+		position: fixed;
+		z-index: 1999;
+		top: 0;
+		left: 0;
+		background-color: #333;
+		overflow-x: hidden;
+		transition: 0.1s;
+		padding-top: 80px;
+		text-align: left;
+	}
+
+	.side-menu button {
+		padding: 14px 25px;
+		font-size: 20px;
+		font-family: Merriweather;
+		color: white;
+		display: block;
+		background: none;
+		border: none;
+		text-align: left;
+		width: 100%;
+		cursor: pointer;
+		transition: background 0.2s;
+	}
+
+	.side-menu button:hover {
+		background-color: white;
+	}
+
+	nav.logo img {
+		height: 200px;
+		display: block;
+		margin: 100px auto 0 auto;
+	}
+
+	h1 {
+		margin-top: 0px;
+		font-family: Merriweather;
+		font-size: 30px;
+	}
+	
+	h3 {
+		margin-top: 0px;
+		font-family: Merriweather;
+		font-size: 20px;
+	}
+
+	.tabs, .subtabs {
+		display: none;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 5px;
+		margin-bottom: 15px;
+	}
+
+	.tabs button, .subtabs button {
+		border: none;
+		border-radius: 40px;
+		padding: 14px 20px;
+		cursor: pointer;
+		font-size: 15px;
+	}
+
+	.tabs button.active, .subtabs button.active {
+		background-color: white;
+	}
+
+	.tabcontent, .subtabcontent {
+		display: none;
+		padding: 20px;
+	}
+
+	iframe {
+		width: 100%;
+		height: 220vh;
+		border: none;
+	}
+
+	select {
+		font-size: 20px;
+		padding: 8px 12px;
+		border-radius: 8px;
+		border: 1px solid #ccc;
+		min-width: 150px;
+		cursor: pointer;
+	}
+
+	.error-message {
+		color: red;
+	}
+
+	.select-group {
+		display: flex;
+		justify-content: center;
+		background-color: white;
+		gap: 15px;
+		margin-bottom: 15px;
+		flex-wrap: wrap;
+		
+	}
+</style>
+</head>
+<body>
+  <div class="Menu">
+    <button id="menuList" onclick="toggleMenu()">☰</button>
+    <button class="logout-button" onclick="logout()">Sair</button>
+
+  </div>
+
+  <header>
+    <nav class="logo">
+      <img src="elixallfrig.png" alt="Logo da Empresa" />
+    </nav>
+  </header>
+
+  <h1>Painel de Informação</h1>
+
+  <div id="sideMenu" class="side-menu">
+	<button class="tablink" onclick="openTab(event, '')" id="defaultOpen">🏢 Início</button>
+    <button class="tablink" onclick="openTab(event, 'Campanhas')" id="defaultOpen">🎯 Campanhas</button>
+    <button class="tablink" onclick="openTab(event, 'Metas')">📊 Metas</button>
+	<button class="tablink" onclick="openTab(event, 'SVenda')">❌ Sem Compras</button>
+	<button class="tablink" onclick="openTab(event, 'Sku')">🏷️ SKU Allfrig</button>
+    <button class="tablink" onclick="openTab(event, 'PEX')">💰 PEX</button>
+    <button class="tablink" onclick="openTab(event, 'Fornecedor')">🏭 Fornecedor</button>
+    <button class="tablink" onclick="openTab(event, 'gestao')"></button>
+  </div>
+
+  <!-- ====================== CAMPANHAS ====================== -->
+  <div id="Campanhas" class="tabcontent">
+    <h3>Campanha</h3>
+	<div class="select-group">
+      <select id="CampanhaSelect" onchange="abrirCampanhaSelecionada()">
+        <option value="Campanha1" selected>Barilla</option>
+        <option value="Campanha2">Bem Brasil</option>
+        <option value="Campanha3">De Marchi</option>
+        <option value="Campanha4">Daucy</option>
+      </select>
+    </div>
+
+    <div id="Campanha1" class="subtabcontent"><iframe id="Campanha1Iframe" src=""></iframe></div>
+    <div id="Campanha2" class="subtabcontent"><iframe id="Campanha2Iframe" src=""></iframe></div>
+    <div id="Campanha3" class="subtabcontent"><iframe id="Campanha3Iframe" src=""></iframe></div>
+    <div id="Campanha4" class="subtabcontent"><iframe id="Campanha4Iframe" src=""></iframe></div>
+  </div>
+
+  <!-- ====================== METAS ====================== -->
+  <div id="Metas" class="tabcontent">
+    <h3>Metas</h3>
+	<div class="select-group">
+      <select id="supervisorSelectMetas" onchange="atualizarVendedoresMetas()"></select>
+      <select id="vendedorSelectMetas" onchange="atualizarIframe('Metas')"></select>
+    </div>
+    <iframe id="metasIframe" src=""></iframe>
+  </div>
+  
+   <!-- ====================== SEM VENDA ====================== -->
+  <div id="SVenda" class="tabcontent">
+	<h3>Sem Compra</h3>
+    <div class="select-group">
+      <select id="supervisorSelectSVendas" onchange="atualizarVendedoresSVendas()"></select>
+      <select id="vendedorSelectSVendas" onchange="atualizarIframe('SVendas')"></select>
+    </div>
+    <iframe id="SVendasIframe" src=""></iframe>
+  </div>
+  
+ <!-- ====================== SKU ALLFRIG ====================== -->
+  <div id="Sku" class="tabcontent">
+	<h3>SKU</h3>
+    <div class="select-group">
+      <select id="supervisorSelectSku" onchange="atualizarVendedoresSku()"></select>
+      <select id="vendedorSelectSku" onchange="atualizarIframe('Sku')"></select>
+    </div>
+    <iframe id="SkuIframe" src=""></iframe>
+  </div>
+  <!-- ====================== PEX ====================== -->
+  <div id="PEX" class="tabcontent">
+	<h3>PEX</h3>
+    <div class="select-group">
+      <select id="supervisorSelectPEX" onchange="atualizarVendedoresPEX()"></select>
+      <select id="vendedorSelectPEX" onchange="atualizarIframe('PEX')"></select>
+    </div>
+    <div class="select-group">
+      <select id="PexSelect" onchange="abrirPEXSelecionada()">
+        <option value="Extrato" selected>Extrato</option>
+        <option value="TopClientes">Top Clientes</option>
+		<option value="SkuPEX">Sku</option>
+      </select>
+    </div>
+
+    <div id="Extrato" class="subtabcontent"><iframe id="extratoIframe" src=""></iframe></div>
+    <div id="TopClientes" class="subtabcontent"><iframe id="topClientesIframe" src=""></iframe></div>
+	<div id="SkuPEX" class="subtabcontent"><iframe id="SkuPEXIframe" src=""></iframe></div>
+  </div>
+
+  <!-- ====================== FORNECEDOR ====================== -->
+  <div id="Fornecedor" class="tabcontent">
+	<h3>Fornecedor</h3>
+    <div class="select-group">
+      <select id="FornecedorSelect" onchange="abrirFornecedorSelecionada()">
+        <option value="Ajinomoto" selected>Ajinomoto</option>
+        <option value="Gyoza">Ajinomoto - Gyoza</option>
+        <option value="Mapa">Demais Fornecedores</option>
+        <option value="Vendas">Faturamento Total</option>
+      </select>
+    </div>
+
+    <div id="Ajinomoto" class="subtabcontent"><iframe id="AjinomotoIframe" src=""></iframe></div>
+    <div id="Gyoza" class="subtabcontent"><iframe id="GyozaIframe" src=""></iframe></div>
+    <div id="Mapa" class="subtabcontent"><iframe id="MapaIframe" src=""></iframe></div>
+    <div id="Vendas" class="subtabcontent"><iframe id="VendasIframe" src=""></iframe></div>
+  </div>
+
+  <!-- ====================== GESTÃO INTERNA ====================== -->
+  <div id="gestao" class="tabcontent">
+	<h3>Gestão Interna</h3>
+    <div class="select-group">
+      <select id="gestaoSelect" onchange="abrirGestaoSelecionada()">
+        <option value="ferias" selected>Férias</option>
+        <option value="premiacao">Premiação</option>
+      </select>
+    </div>
+
+    <div id="ferias" class="subtabcontent"><iframe id="feriasIframe" src=""></iframe></div>
+    <div id="premiacao" class="subtabcontent">
+      <div class="select-group">
+        <select id="supervisorSelectpremiacao" onchange="atualizarIframePremiacao()"></select>
+      </div>
+      <iframe id="premiacaoIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <p class="error-message" id="error-message"></p>
+
+  <script>
+    const apiUrl = "https://sheetdb.io/api/v1/5du6f6ry1uecy";
+    const userData = JSON.parse(localStorage.getItem("userLinks") || "{}");
+    let usuarios = [];
+    let menuAberto = false;
+
+    function toggleMenu() {
+      const menu = document.getElementById("sideMenu");
+      if(menuAberto) { menu.style.width="0"; document.body.style.marginLeft="0"; }
+      else { menu.style.width="250px"; document.body.style.marginLeft="250px"; }
+      menuAberto = !menuAberto;
+    }
+
+    function openTab(evt, tabName) {
+      document.querySelectorAll(".tabcontent").forEach(c=>c.style.display="none");
+      document.querySelectorAll(".tablink").forEach(b=>b.classList.remove("active"));
+      document.getElementById(tabName).style.display="block";
+      evt.currentTarget.classList.add("active");
+    }
+
+    async function carregarUsuarios() {
+      try {
+        const res = await fetch(apiUrl);
+        usuarios = await res.json();
+        preencherSelectsMetas();
+        preencherSelectsSVendas();
+        preencherSelectsSku();
+        preencherSupervisoresPEX();
+      } 
+	  catch(e) {
+        console.error(e);
+        document.getElementById("error-message").innerText = "Erro ao carregar dados.";
+      }
+    }
+
+    // ==================== CAMPANHAS ====================
+    function abrirCampanhaSelecionada() {
+  const sel = document.getElementById("CampanhaSelect").value;
+
+  document.querySelectorAll("#Campanhas .subtabcontent").forEach(c => c.style.display = "none");
+
+  document.getElementById(sel).style.display = "block";
+
+  const vendedor = usuarios.find(u => u.name === userData.name);
+  if (!vendedor) return;
+
+  if (sel === "Campanha1") document.getElementById("Campanha1Iframe").src = vendedor.campanha1Link || "";
+  else if (sel === "Campanha2") document.getElementById("Campanha2Iframe").src = vendedor.campanha2Link || "";
+  else if (sel === "Campanha3") document.getElementById("Campanha3Iframe").src = vendedor.campanha3Link || "";
+  else if (sel === "Campanha4") document.getElementById("Campanha4Iframe").src = vendedor.campanha4Link || "";
+	}
+
+
+    // ==================== METAS ====================
+    function getSupervisores() {
+      return Array.from(new Set(usuarios.filter(u=>u.role==="supervisor").map(u=>u.name))).map(name=>({name, role:"supervisor"}));
+    }
+
+    function getVendedoresPorSupervisor(nome) {
+      return usuarios.filter(u=>u.supervisor===nome && u.role==="vendedor");
+    }
+
+    function preencherSelectsMetas() {
+      const sup = document.getElementById("supervisorSelectMetas");
+      sup.innerHTML="";
+      if(userData.role==="supervisor") sup.appendChild(new Option(userData.name,userData.name));
+      else if(userData.role==="vendedor") sup.appendChild(new Option(userData.supervisor,userData.supervisor));
+      else getSupervisores().forEach(s=>sup.appendChild(new Option(s.name,s.name)));
+      atualizarVendedoresMetas();
+    }
+
+    function atualizarVendedoresMetas() {
+      const sup = document.getElementById("supervisorSelectMetas").value;
+      const vendSel = document.getElementById("vendedorSelectMetas");
+      let vendedores = userData.role==="vendedor" ? [userData] : getVendedoresPorSupervisor(sup);
+      vendSel.innerHTML="";
+      vendedores.forEach(v=>vendSel.appendChild(new Option(v.name,v.name)));
+      atualizarIframe("Metas");
+    }
+	
+	// ==================== SEM VENDAS ====================
+    function getSupervisores() {
+      return Array.from(new Set(usuarios.filter(u=>u.role==="supervisor").map(u=>u.name))).map(name=>({name, role:"supervisor"}));
+    }
+
+    function getVendedoresPorSupervisor(nome) {
+      return usuarios.filter(u=>u.supervisor===nome && u.role==="vendedor");
+    }
+
+    function preencherSelectsSVendas() {
+      const sup = document.getElementById("supervisorSelectSVendas");
+      sup.innerHTML="";
+      if(userData.role==="supervisor") sup.appendChild(new Option(userData.name,userData.name));
+      else if(userData.role==="vendedor") sup.appendChild(new Option(userData.supervisor,userData.supervisor));
+      else getSupervisores().forEach(s=>sup.appendChild(new Option(s.name,s.name)));
+      atualizarVendedoresSVendas();
+    }
+
+    function atualizarVendedoresSVendas() {
+      const sup = document.getElementById("supervisorSelectSVendas").value;
+      const vendSel = document.getElementById("vendedorSelectSVendas");
+      let vendedores = userData.role==="vendedor" ? [userData] : getVendedoresPorSupervisor(sup);
+      vendSel.innerHTML="";
+      vendedores.forEach(v=>vendSel.appendChild(new Option(v.name,v.name)));
+      atualizarIframe("SVendas");
+    }
+	
+	// ==================== SKU ALLFRIG ====================
+    function getSupervisores() {
+      return Array.from(new Set(usuarios.filter(u=>u.role==="supervisor").map(u=>u.name))).map(name=>({name, role:"supervisor"}));
+    }
+
+    function getVendedoresPorSupervisor(nome) {
+      return usuarios.filter(u=>u.supervisor===nome && u.role==="vendedor");
+    }
+
+    function preencherSelectsSku() {
+      const sup = document.getElementById("supervisorSelectSku");
+      sup.innerHTML="";
+      if(userData.role==="supervisor") sup.appendChild(new Option(userData.name,userData.name));
+      else if(userData.role==="vendedor") sup.appendChild(new Option(userData.supervisor,userData.supervisor));
+      else getSupervisores().forEach(s=>sup.appendChild(new Option(s.name,s.name)));
+      atualizarVendedoresSku();
+    }
+
+    function atualizarVendedoresSku() {
+      const sup = document.getElementById("supervisorSelectSku").value;
+      const vendSel = document.getElementById("vendedorSelectSku");
+      let vendedores = userData.role==="vendedor" ? [userData] : getVendedoresPorSupervisor(sup);
+      vendSel.innerHTML="";
+      vendedores.forEach(v=>vendSel.appendChild(new Option(v.name,v.name)));
+      atualizarIframe("Sku");
+    }
+
+    // ==================== PEX ====================
+    function preencherSupervisoresPEX() {
+      const sup = document.getElementById("supervisorSelectPEX");
+      sup.innerHTML="";
+      if(userData.role==="supervisor") sup.appendChild(new Option(userData.name,userData.name));
+      else if(userData.role==="vendedor") sup.appendChild(new Option(userData.supervisor,userData.supervisor));
+      else getSupervisores().forEach(s=>sup.appendChild(new Option(s.name,s.name)));
+      atualizarVendedoresPEX();
+    }
+
+    function atualizarVendedoresPEX() {
+      const sup = document.getElementById("supervisorSelectPEX").value;
+      const vendSel = document.getElementById("vendedorSelectPEX");
+      let vendedores = userData.role==="vendedor" ? [userData] : getVendedoresPorSupervisor(sup);
+      vendSel.innerHTML="";
+      vendedores.forEach(v=>vendSel.appendChild(new Option(v.name,v.name)));
+      abrirPEXSelecionada();
+    }
+
+    function abrirPEXSelecionada() {
+      const sel = document.getElementById("PexSelect").value;
+      document.querySelectorAll("#PEX .subtabcontent").forEach(c=>c.style.display="none");
+      document.getElementById(sel).style.display="block";
+
+      const vendedorName = document.getElementById("vendedorSelectPEX").value;
+      const vendedor = usuarios.find(u=>u.name===vendedorName);
+      if(!vendedor) return;
+      if(sel==="Extrato") document.getElementById("extratoIframe").src=vendedor.extratoLink||"";
+      else if(sel==="TopClientes") document.getElementById("topClientesIframe").src=vendedor.topClientesLink||"";
+	  else if(sel==="SkuPEX") document.getElementById("SkuPEXIframe").src=vendedor.skuPEXLink||"";
+    }
+
+    // ==================== FORNECEDOR ====================
+    function abrirFornecedorSelecionada() {
+      const sel = document.getElementById("FornecedorSelect").value;
+      document.querySelectorAll("#Fornecedor .subtabcontent").forEach(c=>c.style.display="none");
+      document.getElementById(sel).style.display="block";
+
+      const f = usuarios.find(u=>u.name===userData.name);
+      if(!f) return;
+      if(sel==="Ajinomoto") document.getElementById("AjinomotoIframe").src=f.ajinomotoLink||"";
+      else if(sel==="Gyoza") document.getElementById("GyozaIframe").src=f.gyozaLink||"";
+      else if(sel==="Mapa") document.getElementById("MapaIframe").src=f.mapaLink||"";
+      else if(sel==="Vendas") document.getElementById("VendasIframe").src=f.vendasLink||"";
+    }
+
+    // ==================== GESTÃO ====================
+    function abrirGestaoSelecionada() {
+      const sel = document.getElementById("gestaoSelect").value;
+      document.querySelectorAll("#gestao .subtabcontent").forEach(t=>t.style.display="none");
+      document.getElementById(sel).style.display="block";
+
+      if(sel==="ferias") atualizarIframesGestao();
+      if(sel==="premiacao") preencherSupervisorespremiacao();
+    }
+
+    function atualizarIframesGestao() {
+      const v = usuarios.find(u=>u.name===userData.name);
+      if(!v) return;
+      document.getElementById("feriasIframe").src=v.feriasLink||"https://docs.google.com/spreadsheets/d/1QqOoqwcp19AdfqaAcU7dKjmwp5sWAfU1eaPSgjNRq1k/edit?usp=drive_link";
+    }
+
+    function preencherSupervisorespremiacao() {
+      const supSel = document.getElementById("supervisorSelectpremiacao");
+      supSel.innerHTML="";
+      if(userData.role==="supervisor") supSel.appendChild(new Option(userData.name,userData.name));
+      else getSupervisores().forEach(s=>supSel.appendChild(new Option(s.name,s.name)));
+      atualizarIframePremiacao();
+    }
+
+    function atualizarIframePremiacao() {
+      const sup = document.getElementById("supervisorSelectpremiacao").value;
+      const supUser = usuarios.find(u=>u.name===sup && u.role==="supervisor");
+      document.getElementById("premiacaoIframe").src = supUser?.premiacaoLink || "";
+    }
+	
+  // ==================== ATUALIZA OS LINKS DAS ABAS ====================
+    function atualizarIframe(aba) {
+  if(aba==="Metas") {
+    const vendedorName = document.getElementById("vendedorSelectMetas").value;
+    const v = usuarios.find(u=>u.name===vendedorName);
+    if(v) document.getElementById("metasIframe").src=v.metasLink||"";
+  } 
+  else if(aba==="SVendas") {
+    const vendedorName = document.getElementById("vendedorSelectSVendas").value;
+    const v = usuarios.find(u=>u.name===vendedorName);
+    if(v) document.getElementById("SVendasIframe").src=v.svendaLink||""; // aqui define o link
+  }
+  else if(aba==="Sku") {
+    const vendedorName = document.getElementById("vendedorSelectSku").value;
+    const v = usuarios.find(u=>u.name===vendedorName);
+    if(v) document.getElementById("SkuIframe").src=v.skuLink||""; // aqui define o link
+  }  
+  else if(aba==="PEX") abrirPEXSelecionada();
+	else if(aba==="premiacao") atualizarIframePremiacao();
+    }
+
+    function logout(){
+      if(confirm("Deseja realmente sair?")){
+        localStorage.removeItem("userLinks");
+        window.location.href="index.html";
+      }
+    }
+
+ // ==================== BLOQUEAR O SCROLL ====================
+    function bloquearScrollDuranteUsoIframeS(){
+      document.querySelectorAll("iframe").forEach(f=>{
+        f.addEventListener("mouseenter",()=>document.body.style.overflow="hidden");
+        f.addEventListener("mouseleave",()=>document.body.style.overflow="auto");
+      });
+    }
+ // ==================== JANELA DE SELEÇÃO ====================
+    window.onload = async () => {
+      if(!userData.name) { window.location.href="index.html"; return; }
+      await carregarUsuarios();
+      document.getElementById("defaultOpen").click();
+
+      abrirCampanhaSelecionada();
+      abrirPEXSelecionada();
+      abrirFornecedorSelecionada();
+      abrirGestaoSelecionada();
+
+      bloquearScrollDuranteUsoIframe();
+    };
+  </script>
+</body>
+</html>

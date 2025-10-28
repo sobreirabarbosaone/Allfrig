@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="Icon Logo" type="image/x-icon" href="imagens/logo.ico" />
+  <title>ELIX - DASHBOARDS</title>
+  <style>
+    nav.logo {
+		  max-width: 300px;
+		  margin: 0 auto 5px auto;
+		}
+
+		nav.logo img {
+		  max-width: 100%;
+		  height: auto;
+		  display: block;
+		  margin: 0 auto;
+		}
+	body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      text-align: center;
+      margin: 0;
+    }
+    h1, h2, h3, h4 {
+      text-align: center;
+    }
+    .tabs, .subtabs {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      background-color: #f4f4f4;
+    }
+    .tabs button, .subtabs button {
+      background-color: #f4f4f4;
+      border: none;
+      border-radius: 40px;
+      outline: none;
+      padding: 14px 20px;
+      cursor: pointer;
+      font-size: 30px;
+      transition: 0.1s;
+    }
+    .tabs button:hover, .subtabs button:hover {
+      background-color: #ddd;
+    }
+    .tabs button.active, .subtabs button.active {
+      background-color: #ccc;
+    }
+    .tabcontent, .subtabcontent {
+      display: none;
+      padding: 20px;
+    }
+    iframe {
+      width: 100%;
+      height: 75vh;
+      border: none;
+      max-width: 100%;
+    }
+    .error-message {
+      color: red;
+      text-align: center;
+    }
+    .logout-container {
+      text-align: right;
+      padding: 10px 20px;
+    }
+    .logout-container button {
+      padding: 8px 16px;
+      background-color: #cf0000;
+      color: white;
+      border: none;
+      border-radius: 40px;
+      cursor: pointer;
+      font-size: 30px;
+    }
+    .logout-container button:hover {
+      background-color: #c9302c;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <nav class="logo">
+      <img src="imagens/elixallfrig.png" alt="Logo da Empresa" />
+    </nav>
+  </header>
+
+  <div class="logout-container">
+    <button onclick="logout()">Sair</button>
+  </div>
+
+  <h1>Painel de Controles</h1>
+
+  <div class="tabs">
+    <button class="tablink" onclick="openTab(event, 'Campanhas')" id="defaultOpen">Campanhass</button>
+    <button class="tablink" onclick="openTab(event, 'Metas')">Metas</button>
+    <button class="tablink" onclick="openTab(event, 'PEX')">PEX</button>
+  </div>
+
+  <div id="Campanhas" class="tabcontent">
+    <h2>Campanhas</h2>
+    <iframe id="campanhasIframe" src=""></iframe>
+  </div>
+
+  <div id="Metas" class="tabcontent">
+    <h2>Metas</h2>
+    <iframe id="metasIframe" src=""></iframe>
+  </div>
+
+  <div id="PEX" class="tabcontent">
+    <h2>PEX</h2>
+    <div class="subtabs">
+      <button class="subtablink" onclick="openSubTab(event, 'Extrato')" id="defaultSub">Extrato</button>
+      <button class="subtablink" onclick="openSubTab(event, 'TopClientes')">Top Clientes</button>
+    </div>
+
+    <div id="Extrato" class="subtabcontent">
+      <h3>Extrato</h3>
+      <iframe id="extratoIframe" src=""></iframe>
+    </div>
+
+    <div id="TopClientes" class="subtabcontent">
+      <h3>Top Clientes</h3>
+      <iframe id="topClientesIframe" src=""></iframe>
+    </div>
+  </div>
+
+  <p class="error-message" id="error-message"></p>
+
+  <script>
+    // Função para abrir abas principais
+    function openTab(evt, tabName) {
+      let i, tabcontent, tablinks;
+      tabcontent = document.getElementsByClassName("tabcontent");
+      for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+      }
+      tablinks = document.getElementsByClassName("tablink");
+      for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(tabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Função para abrir sub-abas
+    function openSubTab(evt, subTabName) {
+      let i, subtabcontent, subtablinks;
+      subtabcontent = document.getElementsByClassName("subtabcontent");
+      for (i = 0; i < subtabcontent.length; i++) {
+        subtabcontent[i].style.display = "none";
+      }
+      subtablinks = document.getElementsByClassName("subtablink");
+      for (i = 0; i < subtablinks.length; i++) {
+        subtablinks[i].className = subtablinks[i].className.replace(" active", "");
+      }
+      document.getElementById(subTabName).style.display = "block";
+      evt.currentTarget.className += " active";
+    }
+
+    // Função para carregar os links do usuário
+    function loadUserLinks() {
+      const userData = localStorage.getItem("userLinks");
+      const errorMsg = document.getElementById("error-message");
+
+      if (!userData) {
+        window.location.href = "index.html";
+        return;
+      }
+
+      try {
+        const user = JSON.parse(userData);
+        document.getElementById("campanhasIframe").src = user.campaignsLink || "";
+        document.getElementById("metasIframe").src = user.metasLink || "";
+        document.getElementById("extratoIframe").src = user.extratoLink || "";
+        document.getElementById("topClientesIframe").src = user.topClientesLink || "";
+      } catch (e) {
+        console.error("Erro ao carregar dados do usuário:", e);
+        errorMsg.innerText = "Erro ao carregar os dados do usuário.";
+      }
+    }
+
+    // Função para logout com confirmação
+    function logout() {
+      const confirmLogout = confirm("Deseja realmente sair?");
+      if (confirmLogout) {
+        localStorage.removeItem("userLinks");
+        window.location.href = "index.html";
+      }
+    }
+
+    // Bloqueio de scroll na página enquanto o mouse estiver dentro do iframe
+    const iframes = document.querySelectorAll("iframe");
+
+    iframes.forEach((iframe) => {
+      iframe.addEventListener("mouseenter", () => {
+        document.body.style.overflow = "hidden";
+      });
+
+      iframe.addEventListener("mouseleave", () => {
+        document.body.style.overflow = "";
+      });
+    });
+
+    // Executa ao abrir a página
+    window.onload = () => {
+      loadUserLinks();
+      document.getElementById("defaultOpen").click();
+      document.getElementById("defaultSub").click();
+    };
+  </script>
+</body>
+</html>

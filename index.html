@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+	<meta charset="UTF-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>Login</title>
+	<link rel="icon" type="x-icon" href="imagens/logo.ico">
+	<style>
+		nav.logo {
+		  max-width: 200px;
+		  margin: 0 auto 5px auto;
+		}
+		nav.logo img {
+		  max-width: 100%;
+		  height: auto;
+		  display: block;
+		  margin: 0 auto;
+		}
+		body {
+			font-family: Arial, sans-serif;
+			background-color: white;
+			text-align: center;
+		}
+		.login-container {
+			max-width: 450px;
+			margin: 0px auto;
+			padding: 60px;
+			border: 2px solid #333;
+			border-radius: 80px;
+			background-color: white;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+		}
+		input, select {
+			width: 100%;
+			padding: 10px;
+			margin: 10px 0;
+			border: 2px solid #333;
+			border-radius: 40px;
+			font-size: 16px;
+		}
+		button {
+			padding: 10px;
+			width: 105%;
+			background-color: #4CAF50;
+			border: none;
+			color: white;
+			cursor: pointer;
+			font-size: 16px;
+			border-radius: 40px;
+		}
+		button:hover {
+			background-color: #45a049;
+		}
+		.error-message {
+			color: red;
+			display: none;
+			margin-top: 10px;
+			text-align: center;
+		}
+		select#userType {
+			border: 2px solid #333;
+			border-radius: 40px;
+			width: 105%;
+			background-color: white;
+			padding: 12px 20px;
+			color: #333;
+			transition: all 0.1s ease;
+		}
+	</style>
+</head>
+<body>
+	<header>
+		<nav class="logo">
+			<img src="elixallfrig.png" alt="Logo da Empresa" />
+		</nav>
+	</header>
+
+	<div class="login-container">
+		<h2>Login - Dashboard ALLFRIG</h2>
+		<select id="userType">
+			<option value="">Selecione a categoria</option>
+			<option value="geral">Administrativo</option>
+			<option value="fornecedor">Fornecedor</option>
+			<option value="supervisor">Supervisor</option>
+			<option value="vendedor">Vendedor</option>
+		</select>
+		<input type="text" id="username" placeholder="Nome de usuário" />
+		<input type="password" id="password" placeholder="Senha" />
+		<button onclick="verifyLogin()">Entrar</button>
+		<p class="error-message" id="error-message">Mensagem de erro aqui</p>
+	</div>
+
+	<script>
+  async function verifyLogin() {
+    const username = document.getElementById("username").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const userType = document.getElementById("userType").value;
+    const errorMsg = document.getElementById("error-message");
+    errorMsg.style.display = "none";
+
+    if (!username || !password || !userType) {
+      errorMsg.innerText = "Preencha todos os campos e selecione a categoria.";
+      errorMsg.style.display = "block";
+      return;
+    }
+
+    try {
+      const response = await fetch("https://sheetdb.io/api/v1/5du6f6ry1uecy");
+      const users = await response.json();
+      const user = users.find(u =>
+        u.name.toLowerCase() === username.toLowerCase() &&
+        u.password === password &&
+        u.role === userType
+      );
+
+      if (user) {
+        // Salva os dados no localStorage
+        const userLinks = {
+          ...user,
+          campaignsLink: user.campaignsLink || "",
+          metasLink: user.metasLink || "",
+          extratoLink: user.extratoLink || "",
+          topClientesLink: user.topClientesLink || ""
+        };
+        localStorage.setItem("userLinks", JSON.stringify(userLinks));
+
+        // Redirecionamento dinâmico via redirectLink
+        if (user.redirectLink) {
+          window.location.href = user.redirectLink;
+        } else {
+          // Redirecionamento padrão se redirectLink estiver vazio
+          switch (userType) {
+            case "vendedor":
+              window.location.href = "vendedor.html";
+              break;
+            case "supervisor":
+              window.location.href = "supervisor.html";
+              break;
+            case "fornecedor":
+              window.location.href = "fornecedor.html";
+              break;
+            case "geral":
+              window.location.href = "geral.html";
+              break;
+            default:
+              window.location.href = "index.html";
+          }
+        }
+      } else {
+        errorMsg.innerText = "Nome, senha ou categoria incorretos.";
+        errorMsg.style.display = "block";
+      }
+    } catch (err) {
+      console.error(err);
+      errorMsg.innerText = "Erro ao acessar o banco de dados.";
+      errorMsg.style.display = "block";
+    }
+  }
+</script>
+</body>
+</html>
