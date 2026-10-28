@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+	<head> <!-- -->
+		<meta charset="UTF-8" /> <!-- -->
+		<meta name="viewport"/> <!-- -->
+		<title>Elix</title> <!-- -->
+		<link rel="icon" type="x-icon" href="imagens/logo.ico"> <!-- -->
+		<link rel="stylesheet" href="css/style-principal.css"> <!-- -->
+		<script src="js/script-principal.js" defer></script> <!-- -->
+	</head>
+	<body>
+	  <div class="Menu">
+		<button id="menuList" onclick="toggleMenu()">☰</button>
+		<button class="logout-button" onclick="logout()">Logout</button>
+	  </div>
+	  <header>
+		<nav class="logo">
+		  <img src="imagens/Logo+Elix.png" alt="Logo da Empresa" />
+		</nav>
+	  </header>
+	  <h1>Painel de Informação - Bem Brasil</h1>
+	  <div id="sideMenu" class="side-menu">
+		<button class="tablink" onclick="openTab(event, '')" id="defaultOpen">🏢 Início</button>
+		<button class="tablink" onclick="openTab(event, 'Campanhas')" id="defaultOpen">🎯 Campanhas</button>
+		<button class="tablink" onclick="openTab(event, 'PEX')">💰 PEX</button>
+		
+	  </div>
+	  <!-- ====================== CAMPANHAS ====================== -->
+	  <div id="Campanhas" class="tabcontent">
+		<h3>Campanha</h3>
+		<div class="select-group">
+		  <select id="CampanhaSelect" onchange="abrirCampanhaSelecionada()">
+			<option value="Campanha1" selected></option>
+			<option value="Campanha2"></option>
+			<option value="Campanha3"></option>
+			<option value="Campanha4"></option>
+			<option value="Campanha5"></option>
+			<option value="Campanha6"></option>
+		  </select>
+		</div>
+		<div id="Campanha1" class="subtabcontent"><iframe id="Campanha1Iframe" src=""></iframe></div>
+		<div id="Campanha2" class="subtabcontent"><iframe id="Campanha2Iframe" src=""></iframe></div>
+		<div id="Campanha3" class="subtabcontent"><iframe id="Campanha3Iframe" src=""></iframe></div>
+		<div id="Campanha4" class="subtabcontent"><iframe id="Campanha4Iframe" src=""></iframe></div>
+		<div id="Campanha5" class="subtabcontent"><iframe id="Campanha5Iframe" src=""></iframe></div>
+		<div id="Campanha6" class="subtabcontent"><iframe id="Campanha6Iframe" src=""></iframe></div>
+	  </div>
+	  <!-- ====================== METAS ====================== -->
+	  <div id="Metas" class="tabcontent">
+		<h3>Metas</h3>
+		<div class="select-group">
+		  <select id="supervisorSelectMetas" onchange="atualizarVendedoresMetas()"></select>
+		  <select id="vendedorSelectMetas" onchange="atualizarIframe('Metas')"></select>
+		</div>
+		<iframe id="metasIframe" src=""></iframe>
+	  </div>
+	   <!-- ====================== SEM VENDA ====================== -->
+	  <div id="SVenda" class="tabcontent">
+		<h3>Sem Compra</h3>
+		<div class="select-group">
+		  <select id="supervisorSelectSVendas" onchange="atualizarVendedoresSVendas()"></select>
+		  <select id="vendedorSelectSVendas" onchange="atualizarIframe('SVendas')"></select>
+		</div>
+		<iframe id="SVendasIframe" src=""></iframe>
+	  </div>
+	 <!-- ====================== SKU ALLFRIG ====================== -->
+	  <div id="Sku" class="tabcontent">
+		<h3>SKU</h3>
+		<div class="select-group">
+		  <select id="supervisorSelectSku" onchange="atualizarVendedoresSku()"></select>
+		  <select id="vendedorSelectSku" onchange="atualizarIframe('Sku')"></select>
+		</div>
+		<iframe id="SkuIframe" src=""></iframe>
+	  </div>
+	  <!-- ====================== PEX ====================== -->
+	  <div id="PEX" class="tabcontent">
+		<h3>PEX</h3>
+		<div class="select-group">
+		  <select id="supervisorSelectPEX" onchange="atualizarVendedoresPEX()"></select>
+		  <select id="vendedorSelectPEX" onchange="atualizarIframe('PEX')"></select>
+		</div>
+		<div class="select-group">
+		  <select id="PexSelect" onchange="abrirPEXSelecionada()">
+			<option value="Extrato" selected>Extrato</option>
+			<option value="TopClientes">Top Clientes</option>
+			<option value="SkuPEX">Sku</option>
+		  </select>
+		</div>
+		<div id="Extrato" class="subtabcontent"><iframe id="extratoIframe" src=""></iframe></div>
+		<div id="TopClientes" class="subtabcontent"><iframe id="topClientesIframe" src=""></iframe></div>
+		<div id="SkuPEX" class="subtabcontent"><iframe id="SkuPEXIframe" src=""></iframe></div>
+	  </div>
+	   <!-- ====================== JBP ====================== -->
+	  <div id="JBP" class="tabcontent">
+		<h3>JBP</h3>
+		<div class="select-group">
+		  <select id="supervisorSelectJBP" onchange="atualizarVendedoresJBP()"></select>
+		  <select id="vendedorSelectJBP" onchange="atualizarIframe('JBP')"></select>
+		</div>
+		<div class="select-group">
+		  <select id="JBPSelect" onchange="abrirJBPSelecionada()">
+			<option value="Extrato" selected>Extrato</option>
+			<option value="TopClientes">Top Clientes</option>
+		  </select>
+		</div>
+		<div id="Extrato" class="subtabcontent"><iframe id="extratoIframe" src=""></iframe></div>
+		<div id="TopClientes" class="subtabcontent"><iframe id="topClientesIframe" src=""></iframe></div>
+		<div id="SkuPEX" class="subtabcontent"><iframe id="SkuPEXIframe" src=""></iframe></div>
+	  </div>
+	  <!-- ====================== FORNECEDOR ====================== -->
+	  <div id="Fornecedor" class="tabcontent">
+		<h3>Fornecedor</h3>
+		<div class="select-group">
+		  <select id="FornecedorSelect" onchange="abrirFornecedorSelecionada()">
+			<option value="Ajinomoto" selected>Ajinomoto</option>
+			<option value="Gyoza">Ajinomoto - Gyoza</option>
+			<option value="Mapa">Demais Fornecedores</option>
+			<option value="Vendas">Faturamento Total</option>
+		  </select>
+		</div>
+		<div id="Ajinomoto" class="subtabcontent"><iframe id="AjinomotoIframe" src=""></iframe></div>
+		<div id="Gyoza" class="subtabcontent"><iframe id="GyozaIframe" src=""></iframe></div>
+		<div id="Mapa" class="subtabcontent"><iframe id="MapaIframe" src=""></iframe></div>
+		<div id="Vendas" class="subtabcontent"><iframe id="VendasIframe" src=""></iframe></div>
+	  </div>
+	  <!-- ====================== COBRANÇA ====================== -->
+	  <div id="Cobranca" class="tabcontent">
+		<h3>Cobrança</h3>
+		<div class="select-group">
+		  <select id="supervisorSelectCobranca" onchange="atualizarVendedoresCobranca()"></select>
+		  <select id="vendedorSelectCobranca" onchange="atualizarIframe('Cobranca')"></select>
+		</div>
+		<iframe id="CobrancaIframe" src=""></iframe>
+	  </div>
+	  <!-- ====================== GESTÃO INTERNA ====================== -->
+	  <div id="gestao" class="tabcontent">
+		<h3>Meu RH</h3>
+		<div class="select-group">
+		  <select id="gestaoSelect" onchange="abrirGestaoSelecionada()">
+			<option value="ferias" selected>Férias</option>
+			<option value="premiacao">Premiação</option>
+		  </select>
+		</div>
+		<div id="ferias" class="subtabcontent"><iframe id="feriasIframe" src=""></iframe></div>
+		<div id="premiacao" class="subtabcontent">
+		  <div class="select-group">
+			<select id="supervisorSelectpremiacao" onchange="atualizarIframePremiacao()"></select>
+		  </div>
+		  <iframe id="premiacaoIframe" src=""></iframe>
+		</div>
+	  </div>
+	  <p class="error-message" id="error-message"></p>
+	</body>
+
+</html>

@@ -1,0 +1,63 @@
+<style>
+		nav.logo {
+		  max-width: 200px; /* */
+		  margin: 0 auto 50px auto; /* */
+		}
+		nav.logo img {
+		  max-width: 50%; /* */
+		  height: auto; /* */
+		  display: block; /* */
+		  margin: 0 auto; /* */
+		}
+		body {
+			font-family: Inter;
+			background-color: #DCDCDC; /* Cor de fundo da Tela */
+			text-align: center; /*  */
+		}
+		.login-container {
+			max-width: 500px; /* Tamanho da Margem do quadrado */
+			margin: 0px auto; /*Espaço entre a imagem */
+			padding: 50px; /* espaço entre as letras*/
+			border: 3px solid #104fa2; /*Borda de largura e cor definida*/
+			border-radius: 80px; /* Curvatura da Borda*/
+			background-color: #DCDCDC;
+			box-shadow: 0 0 10px rgba(0,0,0,0.1);
+			font-size: 30px;
+		}
+		input, select {
+			width: 100%;
+			padding: 10px;
+			margin: 10px;
+			border: 2px solid #DCDCDC;
+			border-radius: 40px;
+			font-size: 24px;
+		}
+		button {
+			padding: 10px;
+			width: 90%;
+			background-color: #104fa2;
+			border: none;
+			color: white;
+			cursor: pointer;
+			font-size: 16px;
+			border-radius: 40px;
+		}
+		button:hover {
+			background-color: #45a049;
+		}
+		.error-message {
+			color: red;
+			display: none;
+			margin-top: 10px;
+			text-align: center;
+		}
+		select#userType {
+			border: 2px solid #DCDCDC;
+			border-radius: 40px;
+			width: 105%;
+			background-color: #DCDCDC;
+			padding: 12px 20px;
+			color: #333;
+			transition: all 0.4s ease;
+		}
+</style>
